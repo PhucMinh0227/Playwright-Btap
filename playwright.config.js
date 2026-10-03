@@ -29,13 +29,12 @@ export default defineConfig({
     baseURL: "https://vivainternational.vn",
     trace: "on-first-retry",
 
-    headless: false,
+    headless: !!process.env.CI,
 
     launchOptions: {
-      slowMo: 1000,
+      slowMo: process.env.CI ? 0 : 1000,
     },
   },
-
   /* Configure projects for major browsers */
   projects: [
     // {
