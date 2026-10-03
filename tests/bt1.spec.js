@@ -14,8 +14,8 @@ test("Đăng ký thành công", async ({ page }) => {
   const password = page.locator('//input[@name="password"]');
 
   await fullName.fill("Nguyen Minh Phuc");
-  await phone.fill("0123456785");
-  await email.fill("phuccc@gmail.com");
+  await phone.fill("09" + Date.now().toString().slice(-8));
+  await email.fill(`phuc${Date.now()}@gmail.com`);
   await password.fill("12345678");
   await page.locator('//button[@type="submit" and text()="Đăng ký"]').click();
 
@@ -39,4 +39,16 @@ test("Đăng ký không điền đủ thông tin", async ({ page }) => {
   await expect(
     page.locator('//span[text()="Vui lòng nhập Mật khẩu"]'),
   ).toBeVisible();
+});
+
+test("Tìm kiếm", async ({ page }) => {
+  await page.goto("/");
+
+  await page
+    .getByRole("textbox", { name: "Tìm sản phẩm (vd: cà phê phin" })
+    .fill("cà phê");
+  await page
+    .getByRole("textbox", { name: "Tìm sản phẩm (vd: cà phê phin" })
+    .press("Enter");
+  await expect(page).toHaveURL("/search?query=cà%20phê");
 });
